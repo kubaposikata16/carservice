@@ -10,6 +10,7 @@ function App() {
       <Route path="/login" exact element={<Login />} />
       <Route path="/signup" exact element={<Signup />} />
     </Routes>
+    
   );
 }
 export default App;
