@@ -64,7 +64,7 @@ const WszyscyUzytkownicySection = () => {
             const token = localStorage.getItem("token");
             const config = {
               method: "get",
-              url: "http://localhost:8080/forms",
+              url: `http://localhost:8080/forms/userVisits/${selectedUser._id}`,
               headers: {
                 "Content-Type": "application/json",
                 "x-access-token": token,
@@ -83,10 +83,30 @@ const WszyscyUzytkownicySection = () => {
     setSelectedUser(user);
   };
 
-  const handleDeleteUser = (userId) => {
-    // Tutaj wykonaj zapytanie do API, aby usunąć użytkownika
-    // np. axios.delete(`http://localhost:8080/users/${userId}`)
-    // Następnie zaktualizuj stan setUsers po udanej operacji
+  const handleDeleteUser = async (userId) => {
+    try {
+      // Wywołaj zapytanie do API, aby usunąć użytkownika
+      const token = localStorage.getItem("token");
+      const config = {
+        method: "delete",
+        url: `http://localhost:8080/user/${userId}`,
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      };
+      const response = await axios(config);
+      // Jeśli odpowiedź jest pomyślna, zaktualizuj stan użytkowników
+      if (response.status === 200) {
+        // Usuń użytkownika z listy
+        const updatedUsers = users.filter((user) => user._id !== userId);
+        // Aktualizuj stan użytkowników
+        setUsers(updatedUsers);
+      }
+    } catch (error) {
+      // Obsłuż błąd, np. poprzez wyświetlenie komunikatu użytkownikowi
+      console.error("Error deleting user:", error.response.data);
+    }
   };
   const handleRoleChange = async (userId, newRole) => {
     try {
@@ -121,7 +141,6 @@ const WszyscyUzytkownicySection = () => {
       console.error("Error changing user role:", error.response.data);
     }
   };
-  // Usuwanie wybranej wizyty
   const handleDeleteVisit = async (visitId) => {
     try {
       const token = localStorage.getItem("token");
@@ -134,12 +153,36 @@ const WszyscyUzytkownicySection = () => {
         },
       };
       await axios(config);
-      //console.log("Usuwam wizyte o id:", visitId);
+      setVisits(prevVisits => prevVisits.filter(visit => visit._id !== visitId));
     } catch (error) {
-      console.error("Error deleting user info:", error);
-      console.log("Detailed error response:", error.response);
+      console.error("Error deleting visit:", error);
     }
-  }
+  };
+  // Zmiana statusu wizyty na 'Oczekuje na potwierdzenie', 'Zaakceptowano', 'W trakcie realizacji', 'Zakończono', 'Odwołano'
+  const handleChangeVisitStatus = async (visitId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`http://localhost:8080/form/status/${visitId}`, {
+        status: newStatus
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token,
+        }
+      });
+
+      if (response.status === 200) {
+        console.log(`Status wizyty został zmieniony na ${newStatus}`);
+        const updatedVisits = visits.map(visit => 
+          visit._id === visitId ? { ...visit, status: newStatus } : visit
+        );
+        setVisits(updatedVisits);
+      }
+    } catch (error) {
+      console.error('Wystąpił błąd podczas aktualizacji statusu wizyty:', error);
+    }
+};
+  
   // Funkcja do filtrowania użytkowników według roli
   const filterUsersByRole = (role) =>
     users.filter((user) => user.role === role);
@@ -149,7 +192,7 @@ const WszyscyUzytkownicySection = () => {
         <p>Wszyscy Klienci</p>
         <ul>
         {filterUsersByRole("client").map((user) => (
-          <li key={user._id} onClick={() => handleUserClick(user)}>
+          <li key={user._id}>
             <span className={styles.userName}>
               {user.firstName} {user.lastName}
             </span>
@@ -158,6 +201,7 @@ const WszyscyUzytkownicySection = () => {
             </span>
             <span className={styles.adminActions}>
               <button onClick={() => handleDeleteUser(user._id)}>Usuń</button>
+              <button onClick={() => handleUserClick(user)}>Pokaż wizyty</button>
               <select
                 value={user.role} // Ustawienie domyślnej wartości na aktualną rolę użytkownika
                 onChange={(e) => handleRoleChange(user._id, e.target.value)}
@@ -176,7 +220,7 @@ const WszyscyUzytkownicySection = () => {
         <p>Wszyscy Pracownicy</p>
         <ul>
         {filterUsersByRole("employee").map((user) => (
-          <li key={user._id} onClick={() => handleUserClick(user)}>
+          <li key={user._id}>
             <span className={styles.userName}>
               {user.firstName} {user.lastName}
             </span>
@@ -203,7 +247,7 @@ const WszyscyUzytkownicySection = () => {
         <p>Wszyscy Administratorzy</p>
         <ul>
         {filterUsersByRole("admin").map((user) => (
-          <li key={user._id} onClick={() => handleUserClick(user)}>
+          <li key={user._id}>
             <span className={styles.userName}>
               {user.firstName} {user.lastName}
             </span>
@@ -231,17 +275,21 @@ const WszyscyUzytkownicySection = () => {
       {selectedUser !== null && (
         <div>
           <p>
-            Wizyty użytkownika {selectedUser.firstName} {selectedUser.lastName}
+            <h2>Wizyty użytkownika {selectedUser.firstName} {selectedUser.lastName}:</h2>
           </p>
           <ul>
             {visits.map((visit) => (
               <li key={visit._id}>
                 {visit.service}, {visit.carBrand} {visit.carModel} - {formatDate(visit.date)} godzina {visit.time} - {visit.status}
                 <button onClick={() => handleDeleteVisit(visit._id)}>Usuń</button>
-                <button>Zmień Status</button>
+                {visit.status==="Oczekuje na potwierdzenie"&&<button onClick={() => handleChangeVisitStatus(visit._id, "Zaakceptowano")}>Zaakceptuj</button>}
+                {visit.status==="Zaakceptowano"&&<button onClick={() => handleChangeVisitStatus(visit._id, "W trakcie realizacji")}>W trakcie realizacji</button>}
+                {visit.status==="W trakcie realizacji"&&<button onClick={() => handleChangeVisitStatus(visit._id, "Zakończono")}>Zakończ</button>}
+                {visit.status!=="Zakończono"&&visit.status!=="Odwołano"&&<button onClick={() => handleChangeVisitStatus(visit._id, "Odwołano")}>Odwołaj</button>}
               </li>
             ))}
           </ul>
+          
         </div>
       )}
     </div>

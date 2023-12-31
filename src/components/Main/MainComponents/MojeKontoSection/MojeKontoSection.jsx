@@ -78,10 +78,12 @@ const MojeKontoSection = ({ onLogout }) => {
     setUserData((prevData) => ({ ...prevData, [name]: value }));
     setIsDataChanged(true);
   };
-  const handleSave = async () => {
-    // Wykluczanie pól, które nie powinny być zapisane
-    const { __v, _id, password, ...filteredUserData } = userData;
+  const handleSave = async (event) => {
     
+    // Wykluczanie pól, które nie powinny być zapisane
+    const { __v, _id, password, role, ...filteredUserData } = userData;
+    console.log("Dane wysyłane do serwera:", filteredUserData);
+    event.preventDefault();
     try {
       const token = localStorage.getItem("token");
         const config = {
@@ -93,15 +95,17 @@ const MojeKontoSection = ({ onLogout }) => {
           },
           data: filteredUserData
         };
-      alert("Dane zostały pomyślnie zaktualizowane!");
       await axios(config);
+      alert("Dane zostały pomyślnie zaktualizowane!");
+      setIsDataChanged(false);
+      window.location.href = '/';
     } catch (error) {
       console.error(
         "Wystąpił błąd podczas wysyłania żądania PUT:",
         error.message
       );
     }
-    setIsDataChanged(false);
+    
   };
   //Zmiana Hasła:
   const [newPassword, setNewPassword] = useState("");
@@ -254,7 +258,7 @@ const MojeKontoSection = ({ onLogout }) => {
                 <button onClick={handleEditPassword}>Edytuj</button>
               </p>
               <p>
-                Numer Telefonu:{" "}
+                Numer telefonu:{" "}
                 <input
                   type="text"
                   name="phoneNumber"

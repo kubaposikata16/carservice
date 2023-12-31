@@ -11,6 +11,7 @@ import WszystkieWizytySection from "./MainComponents/WszystkieWizytySection/Wszy
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const Main = () => {
+
   //ustaw domyślnie widok sekcji "O nas"
   const [header, setHeader] = useState("O nas");
   const [showOnas, setShowOnas] = useState(true);
@@ -19,7 +20,7 @@ const Main = () => {
   const [showMojeKonto, setShowMojeKonto] = useState(false);
   const [showKontakt, setShowKontakt] = useState(false);
   const [showMojeWizyty, setShowMojeWizyty] = useState(false);
-  const [showWszyscyuzytkownicy, setShowWszyscyuzytkownicy] = useState(false);
+  const [showWszyscyUzytkownicy, setShowWszyscyUzytkownicy] = useState(false);
   const [showWszystkieWizyty, setShowWszystkieWizyty] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); //czy użytkownik zalogowany
   const [isEmployeeLoggedIn, setIsEmployeeLoggedIn] = useState(false); //czy pracownik zalogowany
@@ -82,7 +83,7 @@ const Main = () => {
     setShowMojeKonto(false);
     setShowKontakt(false);
     setShowMojeWizyty(false);
-    setShowWszyscyuzytkownicy(false);
+    setShowWszyscyUzytkownicy(false);
     setShowWszystkieWizyty(false);
   }
   //Przycisk O nas
@@ -128,7 +129,7 @@ const Main = () => {
   const handleWszyscyUzytkownicy = () => {
     clearAll();
     setHeader("Wszyscy użytkownicy");
-    setShowWszyscyuzytkownicy(true);
+    setShowWszyscyUzytkownicy(true);
   }
   const handleWszystkieWizyty = () => {
     clearAll();
@@ -245,7 +246,7 @@ const Main = () => {
           {showMojeKonto && <MojeKontoSection onLogout={handleLogout} />}
           {showKontakt && <KontaktSection />}
           {showMojeWizyty && <MojeWizytySection />}
-          {showWszyscyuzytkownicy && <WszyscyUzytkownicySection/>}
+          {showWszyscyUzytkownicy && <WszyscyUzytkownicySection/>}
           {showWszystkieWizyty && <WszystkieWizytySection/>}
         </div>
       </div>

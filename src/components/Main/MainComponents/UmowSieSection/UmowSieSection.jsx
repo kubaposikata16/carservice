@@ -16,20 +16,68 @@ const UmowSieSection = () => {
     vin: "",
     registrationNumber: "",
   });
-
+  const [availableHours, setAvailableHours] = useState([]);
+  const fetchAvailableHours = async (date) => {
+    if (!date) return; // Jeśli data nie jest ustawiona, nie rób nic
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/forms/available-hours/${date}`
+      );
+      if (response.data) {
+        setAvailableHours(response.data.availableHours); // Ustaw dostępne godziny
+        
+      }
+    } catch (error) {
+      console.error("Error fetching available hours:", error);
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Resetowanie modelu samochodu przy zmianie marki
+    if (name === "carBrand") {
+      setFormData((prevData) => ({
+        ...prevData,
+        carModel: "",
+        [name]: value,
+      }));
+    } else if (name === "serviceType") {
+      // Resetowanie usługi przy zmianie typu usługi
+      setFormData((prevData) => ({
+        ...prevData,
+        service: "",
+        [name]: value,
+      }));
+    } else  if (name === "date") {
+      const selectedDate = new Date(value);
+      const selectedDay = selectedDate.getDay();
+  
+      if (selectedDay === 0) {
+        // Jeśli wybrany dzień to niedziela, wyświetl alert i nie aktualizuj stanu
+        alert("Niestety nasz warsztat jest zamknięty w niedziele. Proszę wybrać inny dzień.");
+      } else {
+        // Aktualizacja stanu dla daty i resetowanie godziny
+        setFormData((prevData) => ({
+          ...prevData,
+          date: value,
+          time: "", // Resetowanie godziny
+        }));
+        fetchAvailableHours(value); // Pobranie dostępnych godzin
+      }
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: name === "carProductionYear" ? parseInt(value, 10) : value,
+      }));
+    }
 
     // Sprawdzenie dla pola daty, czy to nie jest niedziela
     if (name === "date") {
       const selectedDate = new Date(value);
       const selectedDay = selectedDate.getDay();
 
-      if (selectedDay === 0) {
-        alert(
-          "Niestety nasz warsztat jest zamknięty w niedziele. Proszę wybrać inny dzień."
-        );
-        return; // Przerwij działanie funkcji, aby uniknąć aktualizacji stanu
+      if (selectedDay === 0) { // Sprawdzenie, czy wybrany dzień to niedziela
+        alert("Niestety nasz warsztat jest zamknięty w niedziele. Proszę wybrać inny dzień.");
+        return; // Wyjście z funkcji, aby nie aktualizować stanu
       }
     }
 
@@ -42,52 +90,35 @@ const UmowSieSection = () => {
   // Lista opcji dla Service Type
   // Lista opcji dla Service, zależna od wyboru w Service Type
   const serviceOptions = {
-    "Naprawy i usterki": ["Naprawy i usterki"],
-    "Koła i opony": ["Wymiana opon", "wymiana kół"],
-    "Obsługa okresowa": [
-      "Wymiana oleju",
-      "Przegląd okresowy",
-      "Przegląd przed zakupem",
-    ],
-    Hamulce: [
-      "Wymiana klocków hamulcowych",
-      "Wymiana tarcz hamulcowych",
-      "Wymiana płynu hamulcowego",
-    ],
-    Diagnostyka: ["Diagnostyka komputerowa"],
-    "Geometria i zbieżność": ["Geometria i zbieżność"],
-    Klimatyzacja: ["Diagnostyka niedziałającej klimatyzacji", "Wymiana filtra"],
     "Badania techniczne": ["Badania techniczne"],
-  };
+    "Diagnostyka": ["Diagnostyka komputerowa"],
+    "Geometria i zbieżność": ["Geometria i zbieżność"],
+    "Hamulce": ["Wymiana klocków hamulcowych", "Wymiana płynu hamulcowego", "Wymiana tarcz hamulcowych"],
+    "Klimatyzacja": ["Diagnostyka niedziałającej klimatyzacji", "Wymiana filtra"],
+    "Koła i opony": ["Wymiana kół", "Wymiana opon"],
+    "Naprawy i usterki": ["Naprawy i usterki"],
+    "Obsługa okresowa": ["Przegląd okresowy", "Przegląd przed zakupem", "Wymiana oleju"],
+};
+
   const serviceTypeOptions = Object.keys(serviceOptions);
   const carModelOptions = {
-    Volkswagen: ["Amarok", "Passat"],
-    Opel: ["GT", "Insignia"],
-    Ford: ["Mondeo", "Focus"],
-    BMW: ["M3", "M4", "M5"],
-    Audi: ["A3", "A4"],
-    "Mercedes-Benz": ["AMG GT", "Klasa G"],
-    Toyota: ["Auris", "Supra"],
-    Renault: ["Clio", "Twingo"],
-    Skoda: ["Octavia", "Fabia"],
-  };
-  const timeOptions = [
-    "08:00",
-    "08:30",
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-  ];
+    "Audi": ["A1", "A3", "A4", "A5", "A6", "Q3", "Q5"],
+    "BMW": ["M3", "M4", "M5", "Seria 1", "Seria 3", "Seria 5", "X1", "X3", "X5"],
+    "Chevrolet": ["Camaro", "Corvette", "Cruze", "Malibu", "Spark", "Trax"],
+    "Citroen": ["Berlingo", "C1", "C3", "C4", "C5", "Cactus"],
+    "Fiat": ["500", "500L", "500X", "Panda", "Punto", "Tipo"],
+    "Ford": ["EcoSport", "Fiesta", "Focus", "Kuga", "Mondeo", "Mustang"],
+    "Honda": ["Accord", "Civic", "City", "CR-V", "HR-V", "Jazz"],
+    "Hyundai": ["i20", "i30", "Kona", "Santa Fe", "Sonata", "Tucson"],
+    "Mercedes-Benz": ["AMG GT", "GLC", "Klasa A", "Klasa C", "Klasa E", "Klasa G"],
+    "Nissan": ["Juke", "Leaf", "Micra", "Navara", "Qashqai", "X-Trail"],
+    "Opel": ["Astra", "Corsa", "Crossland", "Grandland", "Insignia", "Mokka"],
+    "Renault": ["Captur", "Clio", "Duster", "Kadjar", "Megane", "Scenic", "Twingo"],
+    "SEAT": ["Alhambra", "Arona", "Ateca", "Ibiza", "Leon", "Tarraco"],
+    "Skoda": ["Fabia", "Karoq", "Kodiaq", "Octavia", "Scala", "Superb"],
+    "Toyota": ["Auris", "Aygo", "Camry", "Corolla", "RAV4", "Yaris"],
+    "Volkswagen": ["Arteon", "Golf", "Passat", "Polo", "T-Roc", "Tiguan"],
+};
   const carBrandOptions = Object.keys(carModelOptions);
   //Wyświetlanie komunikatu o Wysłaniu lub błędzie
   const setMessage = (text) => {
@@ -104,39 +135,6 @@ const UmowSieSection = () => {
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 365); // maksymalna data to rok od dziś
 
-  const handleSubmitCar = async (e) => {
-    e.preventDefault();
-
-    try {
-      const config = {
-        method: "post",
-        url: "http://localhost:3000/form",
-        headers: { "Content-Type": "application/json" },
-        data: formData,
-      };
-      const { data: res } = await axios(config);
-      console.log(res.data);
-      // Logika obsługi pomyślnego wysyłania:
-      setFormData({
-        serviceType: "",
-        service: "",
-        carBrand: "",
-        carModel: "",
-        date: "",
-        time: "",
-        moreInfo: "",
-        carProductionYear: "",
-        engine: "",
-        vin: "",
-        registrationNumber: "",
-      });
-      setMessage("Wysłano pomyślnie");
-    } catch (error) {
-      // Logika obsługi błędu
-      console.error("Error submitting form:", error);
-      setMessage("Błąd wysyłania");
-    }
-  };
   const handleSubmitVisit = async (e) => {
     e.preventDefault();
     try {
@@ -151,7 +149,6 @@ const UmowSieSection = () => {
         data: formData,
       };
       const { data: res } = await axios(config);
-      console.log(res.data);
       // Logika obsługi pomyślnego wysyłania:
       setFormData({
         serviceType: "",
@@ -174,7 +171,7 @@ const UmowSieSection = () => {
         error.response.status <= 500
       ) {
         // Logika obsługi błędu
-        console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error.message);
         setMessage("Błąd wysyłania");
       }
     }
@@ -280,11 +277,14 @@ const UmowSieSection = () => {
             value={formData.time}
             onChange={handleChange}
             required
+            disabled={!formData.date || availableHours.length === 0} // Wyłącz wybór godziny, jeśli data nie jest ustawiona lub nie ma dostępnych godzin
           >
-            <option value="" disabled></option>
-            {timeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            <option value="" disabled>
+              Wybierz godzinę
+            </option>
+            {availableHours.map((hour) => (
+              <option key={hour} value={hour}>
+                {hour}
               </option>
             ))}
           </select>
