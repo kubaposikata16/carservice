@@ -50,6 +50,20 @@
 	border-radius: 4px;
 	cursor: pointer;
   }
-  .accountContainer{
+  .confirmation {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+  }
+  
+  .buttonContainer {
 	
+	display: flex;
+	justify-content: center;
+  }
+  
+  .buttonContainer button {
+	margin: 0 10px 10px;
+	flex: 1;
   }

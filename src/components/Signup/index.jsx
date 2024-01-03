@@ -15,12 +15,14 @@ const Signup = () => {
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const url = "http://localhost:8080/users";
       const { data: res } = await axios.post(url, data);
-      navigate("/login");
+      localStorage.setItem("token", res.data)
+      window.location = "/"
       console.log(res.message);
     } catch (error) {
       if (

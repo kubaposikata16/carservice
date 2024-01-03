@@ -1,0 +1,7 @@
+.week_navigation {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }

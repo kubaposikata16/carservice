@@ -84,16 +84,16 @@
 }
 .employee {
   font-weight: bold;
-  color: blue;
+  color: blue; /* Możesz dostosować kolor */
 }
 
 .admin {
   font-weight: bold;
-  color: red; 
+  color: red; /* Możesz dostosować kolor */
 }
 
 .client {
   font-weight: bold;
-  color: green;
+  color: green; /* Możesz dostosować kolor */
 }
 

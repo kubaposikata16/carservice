@@ -28,7 +28,6 @@ const Main = () => {
   const [isEmployeeLoggedIn, setIsEmployeeLoggedIn] = useState(false); //czy pracownik zalogowany
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false); //czy admin zalogowany
   const [isClientLoggedIn, setIsClientLoggedIn] = useState(false); //czy klient zalgowoany
-  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
   //Sprawdzenie czy użytkownik zalogowany i pobranie roli
@@ -60,7 +59,6 @@ const Main = () => {
             setIsEmployeeLoggedIn(false);
             setIsClientLoggedIn(false);
           }
-          setUserRole(roleData.data.role);
         }
       } catch (error) {
         console.error("Error getting user role:", error);
@@ -131,12 +129,12 @@ const Main = () => {
   };
   const handleWszyscyUzytkownicy = () => {
     clearAll();
-    setHeader("Wszyscy użytkownicy");
+    setHeader("");
     setShowWszyscyUzytkownicy(true);
   };
   const handleWszystkieWizyty = () => {
     clearAll();
-    setHeader("WszystkieWizyty");
+    setHeader("Wszystkie Wizyty");
     setShowWszystkieWizyty(true);
   };
   const handleHarmonogramWizyt = () => {
@@ -154,7 +152,7 @@ const Main = () => {
       <div className={styles.main_container}>
         <div className={styles.top_bar}>
           <div className={styles.logo_container}>
-            <a href="https://www.facebook.com" target="_blank">
+            <a href="https://www.facebook.com" target="_blank" rel="noreferrer">
               <img
                 src="../images/fb_logo.png"
                 alt="Facebook Logo"
@@ -162,7 +160,11 @@ const Main = () => {
               />
             </a>
             <span style={{ margin: "0 10px" }}></span>
-            <a href="https://www.instagram.com" target="_blank">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noreferrer"
+            >
               <img
                 src="../images/inst_logo.png"
                 alt="Instagram Logo"
@@ -213,24 +215,25 @@ const Main = () => {
             </button>
           )}
 
-          {isUserLoggedIn && isAdminLoggedIn && (
-            <div>
-              <button
-                className={styles.white_btn}
-                onClick={handleWszyscyUzytkownicy}
-              >
-                Wszyscy Użytkownicy
-              </button>
+          {isUserLoggedIn &&
+            (isAdminLoggedIn || isEmployeeLoggedIn) &&
+            !isClientLoggedIn && (
+              <>
+                <button
+                  className={styles.white_btn}
+                  onClick={handleWszyscyUzytkownicy}
+                >
+                  Wszyscy Użytkownicy
+                </button>
 
-              <button
-                className={styles.white_btn}
-                onClick={handleWszystkieWizyty}
-              >
-                Wszystkie wizyty
-              </button>
-            </div>
-          )}
-
+                <button
+                  className={styles.white_btn}
+                  onClick={handleWszystkieWizyty}
+                >
+                  Wszystkie wizyty
+                </button>
+              </>
+            )}
           {isUserLoggedIn ? (
             <button className={styles.white_btn} onClick={handleMojeKonto}>
               Moje konto
@@ -250,7 +253,10 @@ const Main = () => {
             </button>
           )}
           {isUserLoggedIn && isEmployeeLoggedIn && (
-            <button className={styles.white_btn} onClick={handleHarmonogramWizyt}>
+            <button
+              className={styles.white_btn}
+              onClick={handleHarmonogramWizyt}
+            >
               Harmonogram
             </button>
           )}
@@ -269,7 +275,12 @@ const Main = () => {
           {showMojeKonto && <MojeKontoSection onLogout={handleLogout} />}
           {showKontakt && <KontaktSection />}
           {showMojeWizyty && <MojeWizytySection />}
-          {showWszyscyUzytkownicy && <WszyscyUzytkownicySection />}
+          {showWszyscyUzytkownicy && (
+            <WszyscyUzytkownicySection
+              isAdminLoggedIn={isAdminLoggedIn}
+              isEmployeeLoggedIn={isEmployeeLoggedIn}
+            />
+          )}
           {showWszystkieWizyty && <WszystkieWizytySection />}
           {showHarmonogramWizytSection && <HarmonogramWizytSection />}
         </div>

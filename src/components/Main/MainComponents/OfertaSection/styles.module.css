@@ -44,4 +44,21 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  .table_container table img {
+    width: auto;
+    height: 150px;
+    max-width: 100%;
+    object-fit: contain; 
+    margin: 0 auto;
+  }
+  .table_container table {
+    width: 100%;
+    margin: 0 auto; 
+    border-collapse: collapse; 
+  }
   
+  .table_container td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+  }

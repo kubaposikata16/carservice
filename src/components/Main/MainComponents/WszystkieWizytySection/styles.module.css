@@ -1,0 +1,53 @@
+
+  /* Style dla wiadomości o ładowaniu danych */
+  .loading {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  /* Style dla tabeli */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  /* Style dla nagłówków i komórek tabeli */
+  th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Tło nagłówków tabeli */
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  /* Tło dla parzystych rzędów tabeli */
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Style dla przycisków */
+  .button {
+    padding: 6px 12px;
+    margin-right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  /* Styl dla przycisków podczas najechania */
+  .button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Style dla kontenera przycisków */
+  .buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }

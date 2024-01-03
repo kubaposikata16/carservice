@@ -281,10 +281,12 @@ const MojeKontoSection = ({ onLogout }) => {
         )}
         {showConfirmation && (
           <div className={styles.confirmation}>
-            <p>Czy na pewno chcesz usunąć konto?</p>
+          <p>Czy na pewno chcesz usunąć konto?</p>
+          <div className={styles.buttonContainer}>
             <button onClick={handleConfirmDeleteAccount}>Tak</button>
             <button onClick={handleCancelDeleteAccount}>Anuluj</button>
           </div>
+        </div>
         )}
       </div>
     </div>

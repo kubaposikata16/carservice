@@ -54,6 +54,7 @@ const UmowSieSection = () => {
       if (selectedDay === 0) {
         // Jeśli wybrany dzień to niedziela, wyświetl alert i nie aktualizuj stanu
         alert("Niestety nasz warsztat jest zamknięty w niedziele. Proszę wybrać inny dzień.");
+        return
       } else {
         // Aktualizacja stanu dla daty i resetowanie godziny
         setFormData((prevData) => ({
@@ -121,13 +122,8 @@ const UmowSieSection = () => {
 };
   const carBrandOptions = Object.keys(carModelOptions);
   //Wyświetlanie komunikatu o Wysłaniu lub błędzie
-  const setMessage = (text) => {
-    const messageContainer = document.getElementById("message-container");
-
-    if (messageContainer) {
-      messageContainer.innerText = text;
-    }
-  };
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   // Logika do sprawdzania daty
   const minDate = new Date();
   minDate.setDate(minDate.getDate() + 1); // minimalna data to jutro
@@ -148,7 +144,7 @@ const UmowSieSection = () => {
         },
         data: formData,
       };
-      const { data: res } = await axios(config);
+      await axios(config);
       // Logika obsługi pomyślnego wysyłania:
       setFormData({
         serviceType: "",
@@ -163,6 +159,7 @@ const UmowSieSection = () => {
         vin: "",
         registrationNumber: "",
       });
+      setIsSuccess(true);
       setMessage("Wysłano pomyślnie");
     } catch (error) {
       if (
@@ -171,8 +168,9 @@ const UmowSieSection = () => {
         error.response.status <= 500
       ) {
         // Logika obsługi błędu
+        setIsSuccess(false);
+        setMessage(error.response.data.message);
         console.error("Error submitting form:", error.message);
-        setMessage("Błąd wysyłania");
       }
     }
   };
@@ -359,8 +357,12 @@ const UmowSieSection = () => {
           />
         </label>
       </div>
-      <button type="submit">Wyślij formularz</button>
-      <div id="message-container" className="message"></div>
+      <button type="submit">Umów wizytę</button>
+      {message && (
+                <div className={isSuccess ? styles.correct_msg : styles.error_msg}>
+                    {message}
+                </div>
+            )}
     </form>
   );
 };
