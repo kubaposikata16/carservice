@@ -124,7 +124,7 @@ const WszystkieWizytySection = () => {
       : [...visits].sort((a, b) => a.user.data.lastName.localeCompare(b.user.data.lastName));
 
     return (
-      <table>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>Usługa</th>
@@ -148,9 +148,10 @@ const WszystkieWizytySection = () => {
               <td>{visit.status}</td>
               <td>{visit.user.data.firstName} {visit.user.data.lastName}</td>
               <td>
+                {visit.status!=="Zakończono"&&(
               <button onClick={() => handleDeleteVisit(visit._id)}>
                   Odwołaj
-                </button>
+                </button>)}
                 {visit.status === "Oczekuje na potwierdzenie" && (
                   <button
                     onClick={() =>

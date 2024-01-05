@@ -36,10 +36,12 @@ const OfertaSection = () => {
                 </button>
               </td>
               <td>
-                <img src="../images/Cennik.jpg" alt="Obrazek 3" />
-                <h2>Cennik</h2>
+              <img src="../images/Serwis_klimatyzacji.jpg" alt="Obrazek 6" />
+                <h2>Serwis klimatyzacji</h2>
                 <button
-                  onClick={() => handleScrollToDescription("cennikDescription")}
+                  onClick={() =>
+                    handleScrollToDescription("serwisKlimatyzacjiDescription")
+                  }
                 >
                   Więcej
                 </button>
@@ -69,12 +71,11 @@ const OfertaSection = () => {
                 </button>
               </td>
               <td>
-                <img src="../images/Serwis_klimatyzacji.jpg" alt="Obrazek 6" />
-                <h2>Serwis klimatyzacji</h2>
+                
+                <img src="../images/Cennik.jpg" alt="Obrazek 3" />
+                <h2>Cennik</h2>
                 <button
-                  onClick={() =>
-                    handleScrollToDescription("serwisKlimatyzacjiDescription")
-                  }
+                  onClick={() => handleScrollToDescription("cennikDescription")}
                 >
                   Więcej
                 </button>
@@ -106,8 +107,41 @@ const OfertaSection = () => {
         </p>
       </div>
       <div
-        id="cennikDescription"
+        id="serwisKlimatyzacjiDescription"
         className={`${styles.description} ${styles.nieparzyste}`}
+      >
+        <p>
+          Serwis klimatyzacji to gwarancja świeżego i czystego powietrza w Twoim
+          samochodzie. Zajmujemy się przeglądem, dezynfekcją oraz uzupełnieniem
+          czynnika chłodzącego, dbając o komfort i zdrowie pasażerów w każdych
+          warunkach.
+        </p>
+      </div>
+      <div
+        id="geometriaKolDescription"
+        className={`${styles.description} ${styles.parzyste}`}
+      >
+        <p>
+          Geometria kół to kluczowy element, który wpływa na bezpieczeństwo
+          jazdy. Nasza usługa regulacji geometrii kół zapewnia prawidłowe
+          ustawienie kół, co przekłada się na lepszą przyczepność, równomierne
+          zużycie opon i większy komfort jazdy.
+        </p>
+      </div>
+      <div
+        id="wulkanizacjaDescription"
+        className={`${styles.description} ${styles.nieparzyste}`}
+      >
+        <p>
+          Wulkanizacja to nasza specjalność. Oferujemy szeroki zakres usług, od
+          naprawy uszkodzonych opon po ich wymianę. Dzięki nowoczesnemu
+          sprzętowi gwarantujemy szybką i skuteczną obsługę, abyś mógł
+          bezpiecznie kontynuować podróż.
+        </p>
+      </div>
+      <div
+        id="cennikDescription"
+        className={`${styles.description} ${styles.parzyste}`}
       >
          <table>
     <thead>
@@ -190,39 +224,6 @@ const OfertaSection = () => {
       </tr>
     </tbody>
   </table>
-      </div>
-      <div
-        id="geometriaKolDescription"
-        className={`${styles.description} ${styles.parzyste}`}
-      >
-        <p>
-          Geometria kół to kluczowy element, który wpływa na bezpieczeństwo
-          jazdy. Nasza usługa regulacji geometrii kół zapewnia prawidłowe
-          ustawienie kół, co przekłada się na lepszą przyczepność, równomierne
-          zużycie opon i większy komfort jazdy.
-        </p>
-      </div>
-      <div
-        id="wulkanizacjaDescription"
-        className={`${styles.description} ${styles.nieparzyste}`}
-      >
-        <p>
-          Wulkanizacja to nasza specjalność. Oferujemy szeroki zakres usług, od
-          naprawy uszkodzonych opon po ich wymianę. Dzięki nowoczesnemu
-          sprzętowi gwarantujemy szybką i skuteczną obsługę, abyś mógł
-          bezpiecznie kontynuować podróż.
-        </p>
-      </div>
-      <div
-        id="serwisKlimatyzacjiDescription"
-        className={`${styles.description} ${styles.parzyste}`}
-      >
-        <p>
-          Serwis klimatyzacji to gwarancja świeżego i czystego powietrza w Twoim
-          samochodzie. Zajmujemy się przeglądem, dezynfekcją oraz uzupełnieniem
-          czynnika chłodzącego, dbając o komfort i zdrowie pasażerów w każdych
-          warunkach.
-        </p>
       </div>
     </div>
   );

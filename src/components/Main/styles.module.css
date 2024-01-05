@@ -67,7 +67,7 @@
 	cursor: pointer;
 	background-color: rgb(4, 4, 24);
 	color: white;
-	margin: 10px;
+	margin: 1%;
 	border: none;
 	border: 1px solid
 }
@@ -75,7 +75,6 @@
 .white_btn:hover {
 	background-color: white;
 	color: rgb(4, 4, 24);
-	margin: 10px;
 }
 .adminPanel {
   display: flex;
@@ -84,16 +83,16 @@
 }
 .employee {
   font-weight: bold;
-  color: blue; /* Możesz dostosować kolor */
+  color: blue;
 }
 
 .admin {
   font-weight: bold;
-  color: red; /* Możesz dostosować kolor */
+  color: red; 
 }
 
 .client {
   font-weight: bold;
-  color: green; /* Możesz dostosować kolor */
+  color: green;
 }
 

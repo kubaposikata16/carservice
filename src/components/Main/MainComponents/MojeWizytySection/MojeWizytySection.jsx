@@ -80,7 +80,6 @@ const MojeWizytySection = () => {
     return <p>Brak danych do wyświetlenia.</p>;
   }
 
-  const currentTime = new Date();
   const renderTable = () => {
     if (!userVisitData || userVisitData.length === 0) {
       return <p>Brak danych do wyświetlenia.</p>;

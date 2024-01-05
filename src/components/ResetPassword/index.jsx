@@ -1,20 +1,21 @@
 import { useState } from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
 import styles from "./styles.module.css"
-const Login = () => {
+const ResetPassword = () => {
     const [data, setData] = useState({ email: "", password: "" })
     const [error, setError] = useState("")
+    const [success, setSucces] = useState("");
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value })
     };
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const url = "http://localhost:8080/login"
+            const url = "http://localhost:8080/user/reset-password"
             const { data: res } = await axios.post(url, data)
             localStorage.setItem("token", res.data)
-            window.location = "/"
+            setSucces("Wysłano link, sprawdź poczte aby kontynuować");
+            setError("");
         } catch (error) {
             if (
                 error.response &&
@@ -22,11 +23,12 @@ const Login = () => {
                 error.response.status <= 500
             ) {
                 setError(error.response.data.message)
+                setSucces("");
             }
         }
     }
     const handleGoBack = () =>{
-        window.location = "/"
+        window.location = "/login"
     }
     return (
         <div className={styles.login_container}>
@@ -35,40 +37,31 @@ const Login = () => {
                     <form className={styles.form_container}
                         onSubmit={handleSubmit}>
                              
-                        <h1>Zaloguj się</h1>
+                        <h1>Przypomnij hasło</h1>
                         <input
                             type="email"
-                            placeholder="E-mail"
+                            placeholder="Podaj e-mail"
                             name="email"
                             onChange={handleChange}
                             value={data.email}
                             required
                             className={styles.input}
                         />
-                        <input
-                            type="password"
-                            placeholder="Hasło"
-                            name="password"
-                            onChange={handleChange}
-                            value={data.password}
-                            required
-                            className={styles.input}
-                        />
                         {error && <div
                             className={styles.error_msg}>{error}</div>}
+                        {success && <div className={styles.success_msg}>{success}</div>}
+                        {success === ""&&(
                         <button type="submit"
                             className={styles.black_btn}>
-                            Zaloguj
+                            Przypomnij
                         </button>
-                        <Link to="/reset-password">
-                            Przypomnij hasło
-                    </Link>
-                        <Link to="/signup">
-                        <button type="button"
-                            className={styles.white_btn}>
-                            Zarejestruj
+                        )}
+                        {success !== ""&&(
+                        <button type="submit"
+                            className={styles.black_btn}>
+                            Wyślij ponownie
                         </button>
-                    </Link>
+                        )}
                     <button
                             type="button"
                             onClick={handleGoBack}
@@ -83,4 +76,4 @@ const Login = () => {
         </div>
     )
 }
-export default Login;
+export default ResetPassword;

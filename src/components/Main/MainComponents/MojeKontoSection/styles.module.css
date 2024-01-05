@@ -67,3 +67,8 @@
 	margin: 0 10px 10px;
 	flex: 1;
   }
+  .white_btn:hover {
+	background-color: white;
+	color: rgb(4, 4, 24);
+	margin: 10px;
+}

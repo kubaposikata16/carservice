@@ -213,9 +213,9 @@ const MojeKontoSection = ({ onLogout }) => {
             {newPassword !== "" &&
               passwordLengthValid &&
               passwordsAreCorrect && (
-                <button onClick={handleSavePassword}>Zapisz</button>
+                <button className={styles.white_btn} onClick={handleSavePassword} >Zapisz</button>
               )}
-            <button onClick={handleCancelEditPassword}>Anuluj</button>
+            <button className={styles.white_btn} onClick={handleCancelEditPassword} >Anuluj</button>
           </div>
         )}
         {!showChangePassword && !showConfirmation && (

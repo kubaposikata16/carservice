@@ -6,7 +6,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
   const [users, setUsers] = useState([]); // Tutaj trzymamy dane o użytkownikach
   const [selectedUser, setSelectedUser] = useState(null); // ID aktualnie wybranego użytkownika
   const [visits, setVisits] = useState([]); // Tutaj trzymamy dane o wizytach
-  const roles = ["client", "admin", "employee"];
+  const roles = ["client", "employee", "admin"];
   const months = [
     "styczeń",
     "luty",
@@ -73,7 +73,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
 
     // Wywołanie funkcji
     fetchDataFromApi();
-  }, [])
+  }, []);
 
   // Pobieranie danych o wizytach dla wybranego użytkownika
   useEffect(() => {
@@ -208,7 +208,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
     }
   };
   const renderUserTable = (role, roleName) => (
-    <table>
+    <table className={styles.table}>
       <thead>
         <tr>
           <th colSpan="100%">Wszyscy {roleName}</th>
@@ -231,8 +231,15 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
             <td>
               {isAdminLoggedIn && (
                 <>
-                    <button onClick={() => handleUserClick(user)}>Pokaż wizyty</button>
-                  <button onClick={() => handleDeleteUser(user._id)}>Usuń</button>
+                   
+                  {user.role === "client" && (
+                    <button onClick={() => handleUserClick(user)}>
+                      Pokaż wizyty
+                    </button>
+                  )}
+                  <button onClick={() => handleDeleteUser(user._id)}>
+                    Usuń
+                  </button>
                   <select
                     value={user.role}
                     onChange={(e) => handleRoleChange(user._id, e.target.value)}
@@ -245,8 +252,10 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
                   </select>
                 </>
               )}
-              {isEmployeeLoggedIn && (
-                <button onClick={() => handleUserClick(user)}>Pokaż wizyty</button>
+              {isEmployeeLoggedIn && user.role === "client" && (
+                <button onClick={() => handleUserClick(user)}>
+                  Pokaż wizyty
+                </button>
               )}
             </td>
           </tr>
@@ -257,7 +266,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
   // Funkcja do filtrowania użytkowników według roli
   const filterUsersByRole = (role) =>
     users.filter((user) => user.role === role);
-// Funkcja obsługująca kliknięcie na użytkownika, aby pokazać jego wizyty
+  // Funkcja obsługująca kliknięcie na użytkownika, aby pokazać jego wizyty
   const handleUserClick = (user) => {
     setSelectedUser(user);
   };
@@ -270,9 +279,13 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
   const renderUserVisits = () => {
     return (
       <div>
-        <h2>Wizyty użytkownika {selectedUser.firstName} {selectedUser.lastName}</h2>
-        <button onClick={handleBackToUsers}>Powrót do listy użytkowników</button>
-        <table>
+        <h2>
+          Wizyty użytkownika {selectedUser.firstName} {selectedUser.lastName}
+        </h2>
+        <button onClick={handleBackToUsers}>
+          Powrót do listy użytkowników
+        </button>
+        <table className={styles.background}>
           <thead>
             <tr>
               <th>Usługa</th>
@@ -294,7 +307,10 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
                 <td>{visit.time}</td>
                 <td>{visit.status}</td>
                 <td>
-                  <button onClick={() => handleDeleteVisit(visit._id)}>Odwołaj</button>
+                    {visit.status !== "Zakończono"&&(
+                  <button onClick={() => handleDeleteVisit(visit._id)}>
+                    Odwołaj
+                  </button>)}
                   {visit.status === "Oczekuje na potwierdzenie" && (
                     <button
                       onClick={() =>
@@ -307,7 +323,10 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
                   {visit.status === "Zaakceptowano" && (
                     <button
                       onClick={() =>
-                        handleChangeVisitStatus(visit._id, "W trakcie realizacji")
+                        handleChangeVisitStatus(
+                          visit._id,
+                          "W trakcie realizacji"
+                        )
                       }
                     >
                       W trakcie realizacji
@@ -339,9 +358,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
           {renderUserTable("client", "Klienci")}
           {renderUserTable("employee", "Pracownicy")}
           {isAdminLoggedIn && (
-            <>
-              {renderUserTable("admin", "Administratorzy")}
-            </>
+            <>{renderUserTable("admin", "Administratorzy")}</>
           )}
         </div>
       )}

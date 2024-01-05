@@ -223,7 +223,7 @@ const Main = () => {
                   className={styles.white_btn}
                   onClick={handleWszyscyUzytkownicy}
                 >
-                  Wszyscy Użytkownicy
+                  Wszyscy użytkownicy
                 </button>
 
                 <button
