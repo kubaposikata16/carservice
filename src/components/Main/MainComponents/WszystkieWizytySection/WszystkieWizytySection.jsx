@@ -148,10 +148,7 @@ const WszystkieWizytySection = () => {
               <td>{visit.status}</td>
               <td>{visit.user.data.firstName} {visit.user.data.lastName}</td>
               <td>
-                {visit.status!=="Zakończono"&&(
-              <button onClick={() => handleDeleteVisit(visit._id)}>
-                  Odwołaj
-                </button>)}
+                
                 {visit.status === "Oczekuje na potwierdzenie" && (
                   <button
                     onClick={() =>
@@ -179,6 +176,10 @@ const WszystkieWizytySection = () => {
                     Zakończ
                   </button>
                 )}
+                {visit.status!=="Zakończono"&&(
+              <button onClick={() => handleDeleteVisit(visit._id)}>
+                  Odwołaj
+                </button>)}
               </td>
             </tr>
           ))}

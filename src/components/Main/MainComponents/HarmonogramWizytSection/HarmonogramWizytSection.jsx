@@ -195,9 +195,9 @@ const HarmonogramWizytSection = () => {
         <p>Opis: {selectedVisit.moreinfo}</p>
         <p>Data: {formatDate(selectedVisit.date)}</p>
         <p>Godzina: {selectedVisit.time}</p>
-        <button onClick={() => handleDeleteVisit(selectedVisit._id)}>
+        {selectedVisit.status!=="Zakończono"&&(<button onClick={() => handleDeleteVisit(selectedVisit._id)}>
           Odwołaj
-        </button>
+        </button>)}
         {selectedVisit.status === "Oczekuje na potwierdzenie" && (
           <button
             onClick={() =>

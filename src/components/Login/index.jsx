@@ -60,13 +60,17 @@ const Login = () => {
                             className={styles.black_btn}>
                             Zaloguj
                         </button>
-                        <Link to="/reset-password">
-                            Przypomnij hasło
-                    </Link>
+                        
                         <Link to="/signup">
                         <button type="button"
                             className={styles.white_btn}>
                             Zarejestruj
+                        </button>
+                    </Link>
+                    <Link to="/reset-password">
+                        <button type="button"
+                            className={styles.back_button}>
+                            Przypomnij hasło
                         </button>
                     </Link>
                     <button

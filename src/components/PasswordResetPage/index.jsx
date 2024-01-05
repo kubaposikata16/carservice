@@ -24,7 +24,7 @@ const ResetPassword = () => {
         const data = { newPassword: newPassword };
         console.log(data);
         const url = `http://localhost:8080/user/reset-password/${token}`;
-        await axios.post(url, data);
+        const { data: res } = await axios.put(url, data);
         setNewPassword("");
         setConfirmPassword("");
         setPasswordsAreCorrect(true);

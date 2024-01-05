@@ -20,7 +20,7 @@ const KontaktSection = () => {
       <div className={styles.contactContainer}>
         <p>Adres: ul. Lipska 40B, 22-400 Zamość</p>
         <p>Telefon: 700 900 200</p>
-        <p>Email: kontakt@example.com</p>
+        <p>Email: warsztat@ethereal.email</p>
       </div>
     </div>
   );

@@ -80,6 +80,7 @@ const MojeWizytySection = () => {
     return <p>Brak danych do wyświetlenia.</p>;
   }
 
+  const currentTime = new Date();
   const renderTable = () => {
     if (!userVisitData || userVisitData.length === 0) {
       return <p>Brak danych do wyświetlenia.</p>;
@@ -108,11 +109,11 @@ const MojeWizytySection = () => {
               <td>{visit.carModel}</td>
               <td>{visit.status}</td>
               <td>
-              <button 
+              {visit.status!=="Zakończono"&&(<button 
                   onClick={() => handleDeleteVisit(visit._id)}
                 >
                   Odwołaj
-                </button>
+                </button>)}
                 </td>
             </tr>
           ))}
@@ -126,8 +127,9 @@ const MojeWizytySection = () => {
       <div className={styles.myVisitsContainer}>
         {renderTable()}
       </div>
-      {error && <div className={styles.error_msg}>{error}</div>} 
+      {error && <div className={styles.centered_container}><div className={styles.error_msg}>{error}</div></div>} 
     </div>
+    
   );
 };
 

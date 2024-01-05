@@ -307,10 +307,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
                 <td>{visit.time}</td>
                 <td>{visit.status}</td>
                 <td>
-                    {visit.status !== "Zakończono"&&(
-                  <button onClick={() => handleDeleteVisit(visit._id)}>
-                    Odwołaj
-                  </button>)}
+                    
                   {visit.status === "Oczekuje na potwierdzenie" && (
                     <button
                       onClick={() =>
@@ -341,6 +338,10 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
                       Zakończ
                     </button>
                   )}
+                  {visit.status !== "Zakończono"&&(
+                  <button onClick={() => handleDeleteVisit(visit._id)}>
+                    Odwołaj
+                  </button>)}
                 </td>
               </tr>
             ))}
