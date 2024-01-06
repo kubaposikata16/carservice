@@ -81,7 +81,12 @@ const MojeKontoSection = ({ onLogout }) => {
   const handleSave = async (event) => {
     
     // Wykluczanie pól, które nie powinny być zapisane
-    const { __v, _id, password, role, ...filteredUserData } = userData;
+    const filteredUserData = {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      phoneNumber: userData.phoneNumber
+    };
     console.log("Dane wysyłane do serwera:", filteredUserData);
     event.preventDefault();
     try {
@@ -102,7 +107,7 @@ const MojeKontoSection = ({ onLogout }) => {
     } catch (error) {
       console.error(
         "Wystąpił błąd podczas wysyłania żądania PUT:",
-        error.message
+        error.response.data.message
       );
     }
     

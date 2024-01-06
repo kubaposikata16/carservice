@@ -120,7 +120,7 @@ const WszystkieWizytySection = () => {
 
   const renderVisitsTable = () => {
     const sortedVisits = displayMode === "date" 
-      ? [...visits].sort((a, b) => new Date(a.date) - new Date(b.date))
+      ? [...visits].sort((a, b) =>  new Date(b.date) - new Date(a.date) )
       : [...visits].sort((a, b) => a.user.data.lastName.localeCompare(b.user.data.lastName));
 
     return (

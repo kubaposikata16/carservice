@@ -216,7 +216,7 @@ const WszyscyUzytkownicySection = ({ isAdminLoggedIn, isEmployeeLoggedIn }) => {
         <tr>
           <th>Imię</th>
           <th>Nazwisko</th>
-          <th>Email</th>
+          <th>E-mail</th>
           <th>Telefon</th>
           <th>Akcje</th>
         </tr>
