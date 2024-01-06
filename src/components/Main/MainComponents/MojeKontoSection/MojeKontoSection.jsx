@@ -79,8 +79,6 @@ const MojeKontoSection = ({ onLogout }) => {
     setIsDataChanged(true);
   };
   const handleSave = async (event) => {
-    
-    // Wykluczanie pól, które nie powinny być zapisane
     const filteredUserData = {
       firstName: userData.firstName,
       lastName: userData.lastName,
